@@ -16,7 +16,12 @@ export default [
         },
         rules: {
             // Enables Prettier rules as ESLint rules
-            'prettier/prettier': 'error',
+            'prettier/prettier': [
+                'error',
+                {
+                    endOfLine: 'auto',
+                },
+            ],
             'no-unused-vars': [
                 'warn',
                 {
