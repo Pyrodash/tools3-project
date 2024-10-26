@@ -1,28 +1,23 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-import userRoute from '../routes/User.js'
-
-dotenv.config()
+import { port, mongodb_uri } from './config.js'
+import router from './router.js'
+import logger from './utils/logger.js'
 
 const app = express()
+
 app.use(express.json())
+app.use(router)
 
-const PORT = process.env.PORT || 5000
+mongoose
+    .connect(mongodb_uri)
+    .then(() => {
+        logger.info('Connected to the database')
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI)
-        console.log('MongoDB connected')
-    } catch (error) {
-        console.error(error)
-        process.exit(1)
-    }
-}
-
-app.use('/api/user', userRoute)
-
-app.listen(PORT, async () => {
-    await connectDB()
-    console.log(`Server running on http://localhost:${PORT}`)
-})
+        app.listen(port, () => {
+            logger.info(`Server running on http://localhost:${port}`)
+        })
+    })
+    .catch((err) => {
+        logger.error(`Failed to connect to the database: ${err}`)
+    })
