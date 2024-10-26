@@ -5,14 +5,21 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 import validate from '../middleware/validate.js'
 import { bcrypt_salt_rounds, jwt_expiry_time, jwt_secret } from '../config.js'
+import { DetailedUserDTO } from '../dto/user.js'
 
 const router = express.Router()
 
-const sendForbidden = (res) => {
+const sendError = (statusCode, message, res) => {
     return res
-        .status(403)
-        .send({ message: 'Invalid username or password' })
+        .status(statusCode)
+        .send({
+            errors: [{ msg: message }],
+        })
         .end()
+}
+
+const sendForbidden = (res) => {
+    return sendError(403, 'Invalid email or password', res)
 }
 
 const loginValidator = validate([
@@ -36,7 +43,7 @@ export const login = (user, res) => {
 
     return res.status(200).send({
         token,
-        user,
+        user: new DetailedUserDTO(user),
     })
 }
 
@@ -72,7 +79,11 @@ router.post('/register', registerValidator, async (req, res) => {
 
         return login(user, res)
     } else {
-        return res.status(400).send('Bad request email already exists')
+        return sendError(
+            400,
+            'An account already exists with the same email.',
+            res,
+        )
     }
 })
 
