@@ -5,7 +5,7 @@ import {
     HttpRequest,
 } from '@angular/common/http'
 import { catchError, Observable, throwError } from 'rxjs'
-import { AuthService } from '../account/account.service'
+import { AccountService } from '../account/account.service'
 import { inject } from '@angular/core'
 
 // single responsibility is violated by this interceptor
@@ -15,9 +15,9 @@ export function apiInterceptor(
     req: HttpRequest<unknown>,
     next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
-    const authService = inject(AuthService)
+    const accountService = inject(AccountService)
     const authorization =
-        authService.token !== null ? `Bearer ${authService.token}` : ''
+        accountService.token !== null ? `Bearer ${accountService.token}` : ''
 
     const newRequest = req.clone({
         url: `${import.meta.env.NG_APP_API_URL}${req.url}`,
@@ -27,7 +27,7 @@ export function apiInterceptor(
     return next(newRequest).pipe(
         catchError((error: HttpErrorResponse) => {
             if (error.status === 401) {
-                authService.logout()
+                accountService.logout()
             }
 
             return throwError(() => error)

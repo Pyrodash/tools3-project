@@ -9,8 +9,14 @@ import {
 import { AccountService } from '../../account.service'
 import { first } from 'rxjs'
 import { Router } from '@angular/router'
+import { HttpErrorResponse } from '@angular/common/http'
 
 type FormName = 'login' | 'register'
+
+interface AuthError {
+    msg: string
+    path?: string
+}
 
 @Component({
     selector: 'app-login',
@@ -59,8 +65,13 @@ export class AuthComponent {
                 next: () => {
                     this.router.navigate(['dashboard'])
                 },
-                error: (err) => {
-                    this.errors.login.push(err.message)
+                error: (err: HttpErrorResponse) => {
+                    const errors = err.error?.errors as AuthError[] | null
+                    const messages = errors?.map((err) => err.msg) || [
+                        'An unknown error occurred. Please try again later.',
+                    ]
+
+                    this.errors.login = messages
                 },
             })
     }
@@ -84,8 +95,13 @@ export class AuthComponent {
                 next: () => {
                     this.router.navigate(['dashboard'])
                 },
-                error: (err) => {
-                    this.errors.login.push(err.message)
+                error: (err: HttpErrorResponse) => {
+                    const errors = err.error?.errors as AuthError[] | null
+                    const messages = errors?.map((err) => err.msg) || [
+                        'An unknown error occurred. Please try again later.',
+                    ]
+
+                    this.errors.register = messages
                 },
             })
     }

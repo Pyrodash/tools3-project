@@ -27,6 +27,15 @@
     <a href="/" class="logo"><i class="uil uil-box"></i> Courier.NET</a>
     <nav>
         <a href="/">Home</a>
-        <a href="/login" class="button">Sign In</a>
+        <a href="/login" class="button" *ngIf="!accountService.isAuthenticated"
+            >Sign In</a
+        >
+        <a
+            href="/dashboard"
+            class="button"
+            *ngIf="accountService.isAuthenticated"
+        >
+            Dashboard
+        </a>
     </nav>
 </div>
