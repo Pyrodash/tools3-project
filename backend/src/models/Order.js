@@ -42,7 +42,7 @@ const orderSchema = new mongoose.Schema(
             default: 'pending',
         },
         deliveryTime: {
-            type: Date,
+            type: String,
             required: true,
         },
         receiverPhone: {
