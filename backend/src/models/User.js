@@ -19,8 +19,11 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        // future case you can add roles here for admin and user ...etc
-        // don't forget to create a model for it and connect using sechema type object id
+        role: {
+            type: String,
+            enum: ['seller', 'driver', 'admin'],
+            default: 'seller',
+        },
     },
     {
         timestamps: true,
