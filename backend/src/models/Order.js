@@ -33,11 +33,13 @@ const orderSchema = new mongoose.Schema(
         status: {
             type: String,
             enum: [
+                //picked-up courier ?
+                //Declined ?
                 'pending',
                 'assigned',
                 'accepted',
-                'in transit',
-                'delivered',
+                'in transit', //Courier
+                'delivered', //Courier
             ],
             default: 'pending',
         },
@@ -50,7 +52,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
     },
-    { timestamps: true },
+    { timestamps: true }, //show creation and update time that happens on any document.
 )
 
 export default mongoose.model('Order', orderSchema)

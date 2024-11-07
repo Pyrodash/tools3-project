@@ -1,14 +1,19 @@
 import { Router } from 'express'
 import authenticationMiddleware from '../middleware/authentication.js'
-import { updateOrderStatus } from '../services/orderService.js'
+import roleMiddleware from '../middleware/roleMiddleware.js' // Import role middleware
+import { updateOrderStatus } from './orderUtils.js'
 import Order from '../models/Order.js'
+import User from '../models/user.js'
+import { DetailedUserDTO } from '../dto/user.js'
+
 import { DetailedOrderDTO } from '../dto/order.js'
 
 const router = new Router()
 
 router.use(authenticationMiddleware)
 
-router.get('/all', async (req, res) => {
+// Display all orders (Admin only)
+router.get('/all', roleMiddleware('admin'), async (req, res) => {
     try {
         const orders = await Order.find()
         res.status(200).json(orders.map((order) => new DetailedOrderDTO(order)))
@@ -17,7 +22,8 @@ router.get('/all', async (req, res) => {
     }
 })
 
-router.put('/orders/:id/status', async (req, res) => {
+// Update Status of Orders (Admin)
+router.put('/orders/:id/status', roleMiddleware('admin'), async (req, res) => {
     try {
         const order = await Order.findOne({
             _id: req.params.id,
@@ -42,7 +48,8 @@ router.put('/orders/:id/status', async (req, res) => {
     }
 })
 
-router.delete('/orders/:id', async (req, res) => {
+// Delete Specific Order (Admin only)
+router.delete('/orders/:id', roleMiddleware('admin'), async (req, res) => {
     try {
         const deletedOrder = await Order.findByIdAndDelete(req.params.id)
         if (!deletedOrder) {
@@ -54,7 +61,8 @@ router.delete('/orders/:id', async (req, res) => {
     }
 })
 
-router.put('/orders/:id/assign', async (req, res) => {
+// Assigning orders to drivers (Admin only)
+router.put('/orders/:id/assign', roleMiddleware('admin'), async (req, res) => {
     try {
         const { driverId } = req.body
         const updatedOrder = await Order.findByIdAndUpdate(
@@ -70,5 +78,14 @@ router.put('/orders/:id/assign', async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 })
-
+// Display all drivers (Admin only)
+router.get('/drivers', roleMiddleware('admin'), async (req, res) => {
+    try {
+        // Find users where role is 'driver'
+        const drivers = await User.find({ role: 'driver' })
+        res.status(200).json(drivers.map((user) => new DetailedUserDTO(user)))
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
 export default router

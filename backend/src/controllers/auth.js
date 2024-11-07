@@ -68,15 +68,16 @@ router.post('/register', registerValidator, async (req, res) => {
     const existingUser = await User.findOne({ email: req.body.email })
 
     if (!existingUser) {
+        // Set role to 'seller' if it wasn't provided in the request
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
             password: await bcrypt.hash(req.body.password, bcrypt_salt_rounds),
+            role: req.body.role || 'seller', // Default role to 'seller'
         })
 
         await user.save()
-
         return login(user, res)
     } else {
         return sendError(

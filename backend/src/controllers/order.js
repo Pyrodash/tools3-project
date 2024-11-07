@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import authenticationMiddleware from '../middleware/authentication.js'
-import { updateOrderStatus } from '../services/orderService.js'
+import roleMiddleware from '../middleware/roleMiddleware.js' // Import role middleware
 import Order from '../models/Order.js'
 import { OrderDTO, DetailedOrderDTO } from '../dto/order.js'
 import logger from '../utils/logger.js'
@@ -9,7 +9,8 @@ const router = new Router()
 
 router.use(authenticationMiddleware)
 
-router.post('/create', async (req, res) => {
+// User Creating Order
+router.post('/create', roleMiddleware('seller'), async (req, res) => {
     try {
         const {
             pickupLocation,
@@ -48,7 +49,8 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.get('/all', async (req, res) => {
+// Display Orders for Logged In User (Seller Only)
+router.get('/all', roleMiddleware('seller'), async (req, res) => {
     try {
         const orders = await Order.find({ sellerId: req.user._id })
         res.status(200).json(orders.map((order) => new OrderDTO(order)))
@@ -57,7 +59,8 @@ router.get('/all', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+// Display Specific Order by ID (Seller Only)
+router.get('/:id', roleMiddleware('seller'), async (req, res) => {
     try {
         const order = await Order.findOne({
             _id: req.params.id,
@@ -74,7 +77,8 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+// Cancel Specific Order in Pending State (Seller Only)
+router.delete('/:id', roleMiddleware('seller'), async (req, res) => {
     try {
         const order = await Order.findOne({
             _id: req.params.id,
@@ -93,31 +97,6 @@ router.delete('/:id', async (req, res) => {
 
         await Order.deleteOne({ _id: req.params.id })
         res.status(200).json(new DetailedOrderDTO(order))
-    } catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-})
-
-router.put('/:id', async (req, res) => {
-    try {
-        const order = await Order.findOne({
-            _id: req.params.id,
-            sellerId: req.user._id,
-        })
-
-        if (!order) {
-            return res.status(404).json({ message: 'Order not found' })
-        }
-
-        const { status } = req.body
-        if (!status) {
-            return res.status(400).json({ message: 'Status is required' })
-        }
-
-        await updateOrderStatus(order, status)
-
-        const updatedOrder = await Order.findById(order._id)
-        res.status(200).json(new DetailedOrderDTO(updatedOrder))
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
