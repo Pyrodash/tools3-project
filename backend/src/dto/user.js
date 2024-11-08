@@ -11,5 +11,6 @@ export class DetailedUserDTO extends UserDTO {
 
         this.email = user.email
         this.phone = user.phone
+        this.role = user.role
     }
 }

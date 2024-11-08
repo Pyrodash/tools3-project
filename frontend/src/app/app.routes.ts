@@ -6,6 +6,9 @@ import { AuthGuard, GuestOnlyGuard } from './account/auth.guard'
 import { LogoutComponent } from './account/pages/logout/logout.page'
 import { AccountResolver } from './account/account.resolver'
 import { DashboardComponent } from './dashboard/dashboard.page'
+import { AdminComponent } from './account/pages/admin/admin.page'
+import { AdminOrderComponent } from './account/pages/admin/admin-order/admin-order.page'
+import { AdminUserComponent } from './account/pages/admin/admin-user/admin-user.page'
 
 export const routes: Routes = [
     {
@@ -27,6 +30,23 @@ export const routes: Routes = [
                 path: 'dashboard',
                 component: DashboardComponent,
                 canActivate: [AuthGuard],
+            },
+            {
+                path: 'admin',
+                component: AdminComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {
+                        path: 'orders',
+                        component: AdminOrderComponent,
+                        canActivate: [AuthGuard],
+                    },
+                    {
+                        path: 'users',
+                        component: AdminUserComponent,
+                        canActivate: [AuthGuard],
+                    },
+                ],
             },
             {
                 path: '**',

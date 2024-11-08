@@ -40,6 +40,12 @@ module.exports = tseslint.config(
                     caughtErrorsIgnorePattern: '^_',
                 },
             ],
+            'prettier/prettier': [
+                'error',
+                {
+                    endOfLine: 'auto',
+                },
+            ],
         },
     },
     {

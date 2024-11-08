@@ -24,9 +24,11 @@ a {
 
 .button {
     background: #349dff;
-    background: linear-gradient(0deg,
-            rgba(30, 111, 187, 1) 5%,
-            rgba(24, 145, 255, 1) 100%);
+    background: linear-gradient(
+        0deg,
+        rgba(30, 111, 187, 1) 5%,
+        rgba(24, 145, 255, 1) 100%
+    );
     padding: 0.4em 1.2em;
     border: 0;
     border-radius: 5px;

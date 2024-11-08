@@ -16,6 +16,7 @@ export interface User {
 export interface DetailedUser extends User {
     email: string
     phone: string
+    role: string
 }
 
 export interface CompleteUser extends Omit<DetailedUser, 'id'> {
@@ -43,6 +44,10 @@ export class AccountService {
 
     public get user(): DetailedUser | null {
         return this.userSubject.value
+    }
+
+    public get getUserRole(): string | null {
+        return this.user?.role ?? null
     }
 
     public get token(): string | null {

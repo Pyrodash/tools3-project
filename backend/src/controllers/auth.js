@@ -65,6 +65,19 @@ router.post('/login', loginValidator, async (req, res, _next) => {
 })
 
 router.post('/register', registerValidator, async (req, res) => {
+    //here I check if the role is not seller, driver or admin
+    //I return an error
+    if (
+        req.body.role &&
+        !['seller', 'driver', 'admin'].includes(req.body.role)
+    ) {
+        return sendError(
+            400,
+            'Role must be either seller, driver or admin',
+            res,
+        )
+    }
+
     const existingUser = await User.findOne({ email: req.body.email })
 
     if (!existingUser) {

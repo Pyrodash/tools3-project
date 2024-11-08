@@ -23,12 +23,9 @@ router.get('/all', roleMiddleware('admin'), async (req, res) => {
 })
 
 // Update Status of Orders (Admin)
-router.put('/orders/:id/status', roleMiddleware('admin'), async (req, res) => {
+router.put('/orders/:id', roleMiddleware('admin'), async (req, res) => {
     try {
-        const order = await Order.findOne({
-            _id: req.params.id,
-            sellerId: req.user._id,
-        })
+        const order = await Order.findById(req.params.id)
 
         if (!order) {
             return res.status(404).json({ message: 'Order not found' })
@@ -62,7 +59,7 @@ router.delete('/orders/:id', roleMiddleware('admin'), async (req, res) => {
 })
 
 // Assigning orders to drivers (Admin only)
-router.put('/orders/:id/assign', roleMiddleware('admin'), async (req, res) => {
+router.put('/orders/assign/:id', roleMiddleware('admin'), async (req, res) => {
     try {
         const { driverId } = req.body
         const updatedOrder = await Order.findByIdAndUpdate(
@@ -84,6 +81,23 @@ router.get('/drivers', roleMiddleware('admin'), async (req, res) => {
         // Find users where role is 'driver'
         const drivers = await User.find({ role: 'driver' })
         res.status(200).json(drivers.map((user) => new DetailedUserDTO(user)))
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+// Display a specific order (Admin only)
+router.get('/orders/:id', roleMiddleware('admin'), async (req, res) => {
+    try {
+        const order = await Order.findOne({
+            _id: req.params.id,
+            sellerId: req.user._id,
+        })
+
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' })
+        }
+
+        res.status(200).json(new DetailedOrderDTO(order))
     } catch (error) {
         res.status(400).json({ message: error.message })
     }

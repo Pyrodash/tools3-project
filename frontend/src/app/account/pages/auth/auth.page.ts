@@ -46,6 +46,7 @@ export class AuthComponent {
             email: new FormControl('', [Validators.required, Validators.email]),
             phone: new FormControl('', [Validators.required]), // todo: add proper phone number validator
             password: new FormControl('', Validators.required),
+            role: new FormControl('seller'),
         }),
     }
 
@@ -89,6 +90,7 @@ export class AuthComponent {
                 email: form.value.email,
                 phone: form.value.phone,
                 password: form.value.password,
+                role: 'seller',
             })
             .pipe(first())
             .subscribe({

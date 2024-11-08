@@ -33,11 +33,11 @@ const orderSchema = new mongoose.Schema(
         status: {
             type: String,
             enum: [
-                //picked-up courier ?
-                //Declined ?
                 'pending',
                 'assigned',
                 'accepted',
+                'declined',
+                'picked up',
                 'in transit', //Courier
                 'delivered', //Courier
             ],
