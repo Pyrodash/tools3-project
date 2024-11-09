@@ -1,5 +1,5 @@
 <!-- eslint-disable prettier/prettier -->
-<h1>Manage Orders</h1>
+<h2>Manage Orders</h2>
 <table>
     <thead>
         <tr>
@@ -22,22 +22,10 @@
                 {{ order.destination.city }}, {{ order.destination.address }}
             </td>
             <td>
-                <label for="statusSelect">Update Order Status:</label>
-                <select id="statusSelect" [(ngModel)]="order.status">
-                    <option value="pending">pending</option>
-                    <option value="assigned">assigned</option>
-                    <option value="accepted">accepted</option>
-                    <option value="declined">declined</option>
-                    <option value="picked up">picked up</option>
-                    <option value="in transit">in transit</option>
-                    <option value="delivered">delivered</option>
-                </select>
-
-                <button (click)="updateOrderStatus(order.id, order.status)">
-                    <!-- Use the selected status -->
-                    Update
+                <button (click)="acceptOrder(order.id)">
+                    accept
                 </button>
-                <button (click)="deleteOrder(order.id)">Delete</button>
+                <button (click)="cancelOrder(order.id)">cancel</button>
             </td>
         </tr>
     </tbody>

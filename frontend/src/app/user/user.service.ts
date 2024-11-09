@@ -2,26 +2,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { AccountService } from '../account/account.service'
-import { BehaviorSubject, Observable, EMPTY } from 'rxjs'
+import { BehaviorSubject, Observable, of, EMPTY } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
 
 export type UserRole = 'seller' | 'driver' | 'admin'
 
-export interface user {
+export interface User {
     id: string
     name: string
 }
 
-export interface userdetails extends user {
+export interface UserDetails extends User {
     role: UserRole
+}
+
+export interface nameAndPhone extends UserDetails {
+    phone: string
 }
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserComponent {
-    private usersSubject = new BehaviorSubject<userdetails[]>([])
-    orders$ = this.usersSubject.asObservable()
+export class UserService {
+    // Changed class name to be more consistent with Angular services
+    private usersSubject = new BehaviorSubject<UserDetails[]>([])
+    users$ = this.usersSubject.asObservable()
 
     constructor(
         private router: Router,
@@ -35,17 +40,60 @@ export class UserComponent {
         })
     }
 
-    getAllDrivers(): Observable<userdetails[]> {
+    getAllDrivers(): Observable<UserDetails[]> {
         return this.http
-            .get<userdetails[]>('/admin/drivers', {
+            .get<UserDetails[]>('/admin/drivers', {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
-                tap((users) => {
-                    this.usersSubject.next(users)
-                }),
+                tap((users) => this.usersSubject.next(users)),
                 catchError((error) => {
                     console.error('Error fetching drivers', error)
+                    return EMPTY
+                }),
+            )
+    }
+
+    getAllDriversForDriver(): Observable<UserDetails[]> {
+        return this.http
+            .get<UserDetails[]>('/courier/drivers', {
+                headers: this.getAuthHeaders(),
+            })
+            .pipe(
+                tap((users) => this.usersSubject.next(users)),
+                catchError((error) => {
+                    console.error('Error fetching drivers', error)
+                    return EMPTY
+                }),
+            )
+    }
+
+    getDriverById(id: string): Observable<nameAndPhone> {
+        return this.http
+            .get<nameAndPhone>(`/users/driver/${id}`, {
+                headers: this.getAuthHeaders(),
+            })
+            .pipe(
+                catchError((error) => {
+                    console.error(
+                        `Error fetching driver for order with ID ${id}`,
+                        error,
+                    )
+                    return of(null as unknown as nameAndPhone)
+                }),
+            )
+    }
+
+    //I want to get the driver name by id
+
+    getUserDetails(): Observable<UserDetails> {
+        return this.http
+            .get<UserDetails>(`/user/@me`, {
+                headers: this.getAuthHeaders(),
+            })
+            .pipe(
+                catchError((error) => {
+                    console.error('Error fetching user details', error)
                     return EMPTY
                 }),
             )

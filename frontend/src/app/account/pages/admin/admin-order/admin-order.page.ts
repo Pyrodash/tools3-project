@@ -20,7 +20,7 @@ export class AdminOrderComponent implements OnInit {
         'accepted',
         'declined',
         'picked up',
-        'in-transit',
+        'in transit',
         'delivered',
     ]
 

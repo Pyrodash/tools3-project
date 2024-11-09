@@ -1,5 +1,5 @@
 <!-- eslint-disable prettier/prettier -->
-<h1>Manage Orders</h1>
+<h1>Update Order Status</h1>
 <table>
     <thead>
         <tr>
@@ -24,20 +24,14 @@
             <td>
                 <label for="statusSelect">Update Order Status:</label>
                 <select id="statusSelect" [(ngModel)]="order.status">
-                    <option value="pending">pending</option>
-                    <option value="assigned">assigned</option>
-                    <option value="accepted">accepted</option>
-                    <option value="declined">declined</option>
                     <option value="picked up">picked up</option>
                     <option value="in transit">in transit</option>
                     <option value="delivered">delivered</option>
                 </select>
 
-                <button (click)="updateOrderStatus(order.id, order.status)">
-                    <!-- Use the selected status -->
+                <button (click)="updateDriverOrderStatus(order.id, order.status)">
                     Update
                 </button>
-                <button (click)="deleteOrder(order.id)">Delete</button>
             </td>
         </tr>
     </tbody>

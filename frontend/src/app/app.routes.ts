@@ -9,6 +9,13 @@ import { DashboardComponent } from './dashboard/dashboard.page'
 import { AdminComponent } from './account/pages/admin/admin.page'
 import { AdminOrderComponent } from './account/pages/admin/admin-order/admin-order.page'
 import { AdminUserComponent } from './account/pages/admin/admin-user/admin-user.page'
+import { CourierComponent } from './account/pages/courier/courier.page'
+import { CourierOrderComponent } from './account/pages/courier/courier-order/courier-order.page'
+import { CourierStatusComponent } from './account/pages/courier/courier-status/courier-status.page'
+import { SellerComponent } from './account/pages/seller/seller.page'
+import { SellerCreateComponent } from './account/pages/seller/seller-create/seller-create.page'
+import { SellerOrderComponent } from './account/pages/seller/seller-order/seller-order.page'
+import { OrderDetailsComponent } from './account/pages/order-details/order-details.page'
 
 export const routes: Routes = [
     {
@@ -47,6 +54,45 @@ export const routes: Routes = [
                         canActivate: [AuthGuard],
                     },
                 ],
+            },
+            {
+                path: 'courier',
+                component: CourierComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {
+                        path: 'orders',
+                        component: CourierOrderComponent,
+                        canActivate: [AuthGuard],
+                    },
+                    {
+                        path: 'status',
+                        component: CourierStatusComponent,
+                        canActivate: [AuthGuard],
+                    },
+                ],
+            },
+            {
+                path: 'seller',
+                component: SellerComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {
+                        path: 'create',
+                        component: SellerCreateComponent,
+                        canActivate: [AuthGuard],
+                    },
+                    {
+                        path: 'orders',
+                        component: SellerOrderComponent,
+                        canActivate: [AuthGuard],
+                    },
+                ],
+            },
+            {
+                path: 'order-details/:id',
+                component: OrderDetailsComponent,
+                canActivate: [AuthGuard],
             },
             {
                 path: '**',

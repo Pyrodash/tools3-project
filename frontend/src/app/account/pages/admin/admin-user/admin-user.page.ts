@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { DetailedOrder, OrderService } from '../../../../order/order.service'
-import { UserComponent, userdetails } from '../../../../user/user.service'
+import { UserService, UserDetails } from '../../../../user/user.service'
 import { Observable } from 'rxjs'
 import { CommonModule } from '@angular/common'
 import { NgForOf, NgIf } from '@angular/common'
@@ -13,13 +13,13 @@ import { FormsModule } from '@angular/forms'
     templateUrl: './admin-user.page.html',
 })
 export class AdminUserComponent {
-    drivers$!: Observable<userdetails[]>
+    drivers$!: Observable<UserDetails[]>
     assignedOrders$!: Observable<DetailedOrder[]>
     selectedDriverId = ''
 
     constructor(
         private orderService: OrderService,
-        private userService: UserComponent,
+        private userService: UserService,
     ) {}
 
     ngOnInit(): void {
