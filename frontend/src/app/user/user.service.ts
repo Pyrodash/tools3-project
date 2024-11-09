@@ -4,7 +4,6 @@ import { Router } from '@angular/router'
 import { AccountService } from '../account/account.service'
 import { BehaviorSubject, Observable, of, EMPTY } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
-import { jwtDecode } from 'jwt-decode'
 
 export type UserRole = 'seller' | 'driver' | 'admin'
 
@@ -69,7 +68,6 @@ export class UserService {
             )
     }
 
-<<<<<<< HEAD
     getDriverById(id: string): Observable<nameAndPhone> {
         return this.http
             .get<nameAndPhone>(`/users/driver/${id}`, {
@@ -87,24 +85,6 @@ export class UserService {
     }
 
     //I want to get the driver name by id
-=======
-    getUserID(): string {
-        const token = this.accountService.token
-        if (!token) return ''
-
-        try {
-            interface DecodedToken {
-                userId: string
-                [key: string]: unknown
-            }
-            const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token)
-            return decodedToken.userId || ''
-        } catch (error) {
-            console.error('Error decoding token:', error)
-            return ''
-        }
-    }
->>>>>>> cdd8e0afe5a752829bd90aebb9c764f90312a931
 
     getUserDetails(): Observable<UserDetails> {
         return this.http

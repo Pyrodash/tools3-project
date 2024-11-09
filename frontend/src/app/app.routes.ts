@@ -12,13 +12,10 @@ import { AdminUserComponent } from './account/pages/admin/admin-user/admin-user.
 import { CourierComponent } from './account/pages/courier/courier.page'
 import { CourierOrderComponent } from './account/pages/courier/courier-order/courier-order.page'
 import { CourierStatusComponent } from './account/pages/courier/courier-status/courier-status.page'
-<<<<<<< HEAD
 import { SellerComponent } from './account/pages/seller/seller.page'
 import { SellerCreateComponent } from './account/pages/seller/seller-create/seller-create.page'
 import { SellerOrderComponent } from './account/pages/seller/seller-order/seller-order.page'
 import { OrderDetailsComponent } from './account/pages/order-details/order-details.page'
-=======
->>>>>>> cdd8e0afe5a752829bd90aebb9c764f90312a931
 
 export const routes: Routes = [
     {
@@ -76,7 +73,6 @@ export const routes: Routes = [
                 ],
             },
             {
-<<<<<<< HEAD
                 path: 'seller',
                 component: SellerComponent,
                 canActivate: [AuthGuard],
@@ -99,8 +95,6 @@ export const routes: Routes = [
                 canActivate: [AuthGuard],
             },
             {
-=======
->>>>>>> cdd8e0afe5a752829bd90aebb9c764f90312a931
                 path: '**',
                 pathMatch: 'full',
                 component: NotFoundComponent,
