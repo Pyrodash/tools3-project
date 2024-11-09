@@ -24,7 +24,11 @@ export class CourierOrderComponent implements OnInit {
         'accepted',
         'declined',
         'picked up',
+<<<<<<< HEAD
         'in transit',
+=======
+        'in-transit',
+>>>>>>> cdd8e0afe5a752829bd90aebb9c764f90312a931
         'delivered',
     ]
 

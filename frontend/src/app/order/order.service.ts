@@ -103,6 +103,7 @@ export class OrderService {
             )
     }
 
+<<<<<<< HEAD
     getOrderByIdForUser(id: string): Observable<DetailedOrder> {
         return this.http
             .get<DetailedOrder>(`/orders/${id}`, {
@@ -129,6 +130,10 @@ export class OrderService {
             )
     }
 
+=======
+    //this is the wrong endpoint
+    //TODO: change the endpoint to the correct one
+>>>>>>> cdd8e0afe5a752829bd90aebb9c764f90312a931
     addOrder(order: DetailedOrder): Observable<DetailedOrder> {
         return this.http
             .post<DetailedOrder>('/orders/create', order, {
