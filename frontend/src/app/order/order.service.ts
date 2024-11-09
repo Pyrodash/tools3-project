@@ -89,6 +89,8 @@ export class OrderService {
             )
     }
 
+    //this is the wrong endpoint
+    //TODO: change the endpoint to the correct one
     addOrder(order: DetailedOrder): Observable<DetailedOrder> {
         return this.http
             .post<DetailedOrder>('/api/orders', order, {
@@ -142,6 +144,19 @@ export class OrderService {
             )
     }
 
+    driverCancelOrder(id: string): Observable<void> {
+        return this.http
+            .put<void>(`/courier/cancel/${id}`, {
+                headers: this.getAuthHeaders(),
+            })
+            .pipe(
+                catchError((error) => {
+                    console.error(`Error cancelling order with ID ${id}`, error)
+                    return EMPTY
+                }),
+            )
+    }
+
     deleteOrder(id: string): Observable<void> {
         return this.http
             .delete<void>(`/admin/orders/${id}`, {
@@ -151,6 +166,46 @@ export class OrderService {
                 catchError((error) => {
                     console.error(
                         `Failed to delete order with ID: ${id}`,
+                        error,
+                    )
+                    return EMPTY
+                }),
+            )
+    }
+
+    getDriverOrders(driverId: string): Observable<DetailedOrder[]> {
+        return this.http
+            .get<DetailedOrder[]>(`/courier/assigned/${driverId}`, {
+                headers: this.getAuthHeaders(),
+            })
+            .pipe(
+                catchError((error) => {
+                    console.error(
+                        `Error fetching orders for driver ${driverId}`,
+                        error,
+                    )
+                    return of([])
+                }),
+            )
+    }
+
+    updateDriverOrderStatus(
+        id: string,
+        status: OrderStatus,
+        driverId: string,
+    ): Observable<void> {
+        return this.http
+            .put<void>(
+                `/courier/orders/${id}`,
+                { status, driverId },
+                {
+                    headers: this.getAuthHeaders(),
+                },
+            )
+            .pipe(
+                catchError((error) => {
+                    console.error(
+                        `Error updating status for order with ID ${id}`,
                         error,
                     )
                     return EMPTY

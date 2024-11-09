@@ -16,12 +16,12 @@ export class DashboardComponent implements OnInit {
         // Redirect based on the role
         if (userRole === 'admin') {
             this.router.navigate(['admin'])
-        } /* else if (userRole === 'driver') {
-            this.router.navigate(['/driver-page'])
+        } else if (userRole === 'driver') {
+            this.router.navigate(['courier'])
         } else if (userRole === 'seller') {
-            this.router.navigate(['/seller-page'])
+            this.router.navigate(['seller'])
         } else {
             this.router.navigate(['/login'])
-        }*/
+        }
     }
 }

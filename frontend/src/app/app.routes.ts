@@ -9,6 +9,9 @@ import { DashboardComponent } from './dashboard/dashboard.page'
 import { AdminComponent } from './account/pages/admin/admin.page'
 import { AdminOrderComponent } from './account/pages/admin/admin-order/admin-order.page'
 import { AdminUserComponent } from './account/pages/admin/admin-user/admin-user.page'
+import { CourierComponent } from './account/pages/courier/courier.page'
+import { CourierOrderComponent } from './account/pages/courier/courier-order/courier-order.page'
+import { CourierStatusComponent } from './account/pages/courier/courier-status/courier-status.page'
 
 export const routes: Routes = [
     {
@@ -44,6 +47,23 @@ export const routes: Routes = [
                     {
                         path: 'users',
                         component: AdminUserComponent,
+                        canActivate: [AuthGuard],
+                    },
+                ],
+            },
+            {
+                path: 'courier',
+                component: CourierComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {
+                        path: 'orders',
+                        component: CourierOrderComponent,
+                        canActivate: [AuthGuard],
+                    },
+                    {
+                        path: 'status',
+                        component: CourierStatusComponent,
                         canActivate: [AuthGuard],
                     },
                 ],

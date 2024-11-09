@@ -32,3 +32,20 @@ export async function deleteOrder(orderId) {
         throw new Error('Failed to delete order')
     }
 }
+
+export async function removeDriverFromOrder(orderId) {
+    try {
+        const order = await Order.findById(orderId)
+
+        if (!order) {
+            throw new Error('Order not found')
+        }
+
+        order.driverId = null
+        await order.save()
+        return order
+    } catch (err) {
+        logger.error(`Failed to remove driver from order: ${err}`)
+        throw new Error('Failed to remove driver from order')
+    }
+}
