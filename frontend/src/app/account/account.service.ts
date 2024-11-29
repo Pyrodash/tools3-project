@@ -60,7 +60,7 @@ export class AccountService {
 
     login(email: string, password: string) {
         return this.http
-            .post<AuthResponse>('/auth/login', { email, password })
+            .post<AuthResponse>('/api/auth/login', { email, password })
             .pipe(
                 map((response) => {
                     this.token = response.token
@@ -74,7 +74,7 @@ export class AccountService {
     }
 
     register(user: CompleteUser) {
-        return this.http.post<AuthResponse>('/auth/register', user).pipe(
+        return this.http.post<AuthResponse>('/api/auth/register', user).pipe(
             map((response) => {
                 this.token = response.token
 
@@ -98,7 +98,7 @@ export class AccountService {
     }
 
     fetchMyUser() {
-        return this.http.get<DetailedUser>('/users/@me').pipe(
+        return this.http.get<DetailedUser>('/api/users/@me').pipe(
             tap((user) => {
                 this.userSubject.next(user)
             }),

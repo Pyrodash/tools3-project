@@ -64,7 +64,7 @@ export class OrderService {
 
     getOrders(): Observable<DetailedOrder[]> {
         return this.http
-            .get<DetailedOrder[]>('/admin/all', {
+            .get<DetailedOrder[]>('/api/admin/all', {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -78,7 +78,7 @@ export class OrderService {
 
     getUserOrders(): Observable<DetailedOrder[]> {
         return this.http
-            .get<DetailedOrder[]>('/orders/all', {
+            .get<DetailedOrder[]>('/api/orders/all', {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -92,7 +92,7 @@ export class OrderService {
 
     getOrderById(id: string): Observable<DetailedOrder> {
         return this.http
-            .get<DetailedOrder>(`/admin/orders/${id}`, {
+            .get<DetailedOrder>(`/api/admin/orders/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -105,7 +105,7 @@ export class OrderService {
 
     getOrderByIdForUser(id: string): Observable<DetailedOrder> {
         return this.http
-            .get<DetailedOrder>(`/orders/${id}`, {
+            .get<DetailedOrder>(`/api/orders/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -118,7 +118,7 @@ export class OrderService {
 
     cancelOrderByIdForUser(id: string): Observable<DetailedOrder> {
         return this.http
-            .delete<DetailedOrder>(`/orders/${id}`, {
+            .delete<DetailedOrder>(`/api/orders/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -131,7 +131,7 @@ export class OrderService {
 
     addOrder(order: DetailedOrder): Observable<DetailedOrder> {
         return this.http
-            .post<DetailedOrder>('/orders/create', order, {
+            .post<DetailedOrder>('/api/orders/create', order, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -145,7 +145,7 @@ export class OrderService {
     updateOrderStatus(id: string, status: OrderStatus): Observable<void> {
         return this.http
             .put<void>(
-                `/admin/orders/${id}`,
+                `/api/admin/orders/${id}`,
                 { status },
                 {
                     headers: this.getAuthHeaders(),
@@ -165,7 +165,7 @@ export class OrderService {
     updateOrderDriver(id: string, driverId: string): Observable<void> {
         return this.http
             .put<void>(
-                `/admin/orders/assign/${id}`,
+                `/api/admin/orders/assign/${id}`,
                 { driverId },
                 {
                     headers: this.getAuthHeaders(),
@@ -184,7 +184,7 @@ export class OrderService {
 
     driverCancelOrder(id: string): Observable<void> {
         return this.http
-            .put<void>(`/courier/cancel/${id}`, {
+            .put<void>(`/api/courier/cancel/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -197,7 +197,7 @@ export class OrderService {
 
     deleteOrder(id: string): Observable<void> {
         return this.http
-            .delete<void>(`/admin/orders/${id}`, {
+            .delete<void>(`/api/admin/orders/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -213,7 +213,7 @@ export class OrderService {
 
     getDriverOrders(driverId: string): Observable<DetailedOrder[]> {
         return this.http
-            .get<DetailedOrder[]>(`/courier/assigned/${driverId}`, {
+            .get<DetailedOrder[]>(`/api/courier/assigned/${driverId}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -234,7 +234,7 @@ export class OrderService {
     ): Observable<void> {
         return this.http
             .put<void>(
-                `/courier/orders/${id}`,
+                `/api/courier/orders/${id}`,
                 { status, driverId },
                 {
                     headers: this.getAuthHeaders(),

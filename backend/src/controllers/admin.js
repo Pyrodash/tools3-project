@@ -3,7 +3,7 @@ import authenticationMiddleware from '../middleware/authentication.js'
 import roleMiddleware from '../middleware/roleMiddleware.js' // Import role middleware
 import { updateOrderStatus } from './orderUtils.js'
 import Order from '../models/Order.js'
-import User from '../models/user.js'
+import user from '../models/user.js'
 import { DetailedUserDTO } from '../dto/user.js'
 
 import { DetailedOrderDTO } from '../dto/order.js'
@@ -79,7 +79,7 @@ router.put('/orders/assign/:id', roleMiddleware('admin'), async (req, res) => {
 router.get('/drivers', roleMiddleware('admin'), async (req, res) => {
     try {
         // Find users where role is 'driver'
-        const drivers = await User.find({ role: 'driver' })
+        const drivers = await user.find({ role: 'driver' })
         res.status(200).json(drivers.map((user) => new DetailedUserDTO(user)))
     } catch (error) {
         res.status(400).json({ message: error.message })

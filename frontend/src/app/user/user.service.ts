@@ -42,7 +42,7 @@ export class UserService {
 
     getAllDrivers(): Observable<UserDetails[]> {
         return this.http
-            .get<UserDetails[]>('/admin/drivers', {
+            .get<UserDetails[]>('/api/admin/drivers', {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -56,7 +56,7 @@ export class UserService {
 
     getAllDriversForDriver(): Observable<UserDetails[]> {
         return this.http
-            .get<UserDetails[]>('/courier/drivers', {
+            .get<UserDetails[]>('/api/courier/drivers', {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -70,7 +70,7 @@ export class UserService {
 
     getDriverById(id: string): Observable<nameAndPhone> {
         return this.http
-            .get<nameAndPhone>(`/users/driver/${id}`, {
+            .get<nameAndPhone>(`/api/users/driver/${id}`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(
@@ -88,7 +88,7 @@ export class UserService {
 
     getUserDetails(): Observable<UserDetails> {
         return this.http
-            .get<UserDetails>(`/user/@me`, {
+            .get<UserDetails>(`/api/user/@me`, {
                 headers: this.getAuthHeaders(),
             })
             .pipe(

@@ -2,7 +2,7 @@ import express from 'express'
 import { body } from 'express-validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import User from '../models/user.js'
+import user from '../models/user.js'
 import validate from '../middleware/validate.js'
 import { bcrypt_salt_rounds, jwt_expiry_time, jwt_secret } from '../config.js'
 import { DetailedUserDTO } from '../dto/user.js'
@@ -38,7 +38,8 @@ const registerValidator = validate([
 
 export const login = (user, res) => {
     const token = jwt.sign({ id: user.id }, jwt_secret, {
-        expiresIn: jwt_expiry_time,
+        //expiresIn: jwt_expiry_time,
+          expiresIn: '1h'
     })
 
     return res.status(200).send({
@@ -48,14 +49,14 @@ export const login = (user, res) => {
 }
 
 router.post('/login', loginValidator, async (req, res, _next) => {
-    const user = await User.findOne({ email: req.body.email })
+    const newuser = await user.findOne({ email: req.body.email })
     const password = req.body.password
 
-    if (user) {
-        const isValidPassword = await bcrypt.compare(password, user.password)
+    if (newuser) {
+        const isValidPassword = await bcrypt.compare(password, newuser.password)
 
         if (isValidPassword) {
-            return login(user, res)
+            return login(newuser, res)
         } else {
             return sendForbidden(res)
         }
@@ -78,11 +79,11 @@ router.post('/register', registerValidator, async (req, res) => {
         )
     }
 
-    const existingUser = await User.findOne({ email: req.body.email })
+    const existingUser = await user.findOne({ email: req.body.email })
 
     if (!existingUser) {
         // Set role to 'seller' if it wasn't provided in the request
-        const user = new User({
+        const newuser = new user({
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
@@ -90,8 +91,8 @@ router.post('/register', registerValidator, async (req, res) => {
             role: req.body.role || 'seller', // Default role to 'seller'
         })
 
-        await user.save()
-        return login(user, res)
+        await newuser.save()
+        return login(newuser, res)
     } else {
         return sendError(
             400,

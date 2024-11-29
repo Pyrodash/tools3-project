@@ -4,7 +4,7 @@ import roleMiddleware from '../middleware/roleMiddleware.js' // Import role midd
 import { updateOrderStatus, removeDriverFromOrder } from './orderUtils.js'
 import Order from '../models/Order.js'
 import { DetailedOrderDTO } from '../dto/order.js'
-import User from '../models/user.js'
+import user from '../models/user.js'
 
 const router = new Router()
 
@@ -83,7 +83,7 @@ router.put('/cancel/:id', roleMiddleware('driver'), async (req, res) => {
 
 router.get('/drivers', roleMiddleware('driver'), async (req, res) => {
     try {
-        const drivers = await User.find({ role: 'driver' })
+        const drivers = await user.find({ role: 'driver' })
         res.status(200).json(drivers)
     } catch (error) {
         res.status(400).json({ message: error.message })
