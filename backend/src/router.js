@@ -7,10 +7,10 @@ import courierController from './controllers/courier.js'
 
 const router = new Router()
 
-router.use('/auth', authController)
-router.use('/users', userController)
-router.use('/orders', orderController)
-router.use('/admin', adminController)
-router.use('/courier', courierController)
+router.use('/api/auth', authController)
+router.use('/api/users', userController)
+router.use('/api/orders', orderController)
+router.use('/api/admin', adminController)
+router.use('/api/courier', courierController)
 
 export default router

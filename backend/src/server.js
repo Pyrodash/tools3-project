@@ -17,7 +17,10 @@ mongoose
         logger.info('Connected to the database')
 
         app.listen(port, () => {
-            logger.info(`Server running on http://localhost:${port}`)
+            // logger.info(`Server running on http://localhost:${port}`)
+            // logger.info(`Server running on https://my-backend:${port}`)
+            logger.info(`Server running on https://my-backend-crt-20206058-dev.apps.rm3.7wse.p1.openshiftapps.com:3000`)
+            // logger.info(`Server running on https://my-app-crt-20206058-dev.apps.rm3.7wse.p1.openshiftapps.com/${port}`)
         })
     })
     .catch((err) => {
