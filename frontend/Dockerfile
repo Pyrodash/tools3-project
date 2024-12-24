@@ -107,7 +107,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 USER nginx
 
 # Expose port 8080 for Nginx
-EXPOSE 8080
+EXPOSE 8081
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
